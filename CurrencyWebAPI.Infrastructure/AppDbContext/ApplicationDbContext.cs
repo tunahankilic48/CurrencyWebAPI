@@ -2,12 +2,12 @@
 using CurrencyWebAPI.Infrastructure.EntitiesConfiguration;
 using Microsoft.EntityFrameworkCore;
 
-namespace CurrencyWebAPI.Infrastructure.ApplicationDbContext
+namespace CurrencyWebAPI.Infrastructure.AppDbContext
 {
     public class ApplicationDbContext : DbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-        {            
+        {
         }
 
         public DbSet<Currency> Currencies { get; set; }
