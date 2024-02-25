@@ -31,6 +31,8 @@ namespace CurrencyWebAPI.Domain.Repositories
         /// <returns></returns>
         Task<bool> Add(TEntity entity);
 
+        Task<bool> AddRange(List<TEntity> entities);
+
         /// <summary>
         /// Update <typeparamref name="TEntity" />
         /// </summary>
