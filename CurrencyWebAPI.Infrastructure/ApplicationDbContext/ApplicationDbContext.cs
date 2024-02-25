@@ -1,4 +1,5 @@
 ﻿using CurrencyWebAPI.Domain.Entities;
+using CurrencyWebAPI.Infrastructure.EntitiesConfiguration;
 using Microsoft.EntityFrameworkCore;
 
 namespace CurrencyWebAPI.Infrastructure.ApplicationDbContext
