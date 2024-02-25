@@ -6,6 +6,6 @@
         public DateTime Date { get; set; }
         public string? Value { get; set; }
 
-        public List<Currency>? Currencies { get; set;}
+        public Currency? Currency { get; set;}
     }
 }
