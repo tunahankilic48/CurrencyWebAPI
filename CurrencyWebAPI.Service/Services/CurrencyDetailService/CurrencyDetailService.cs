@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
-using CurrencyWebAPI.Business.Models.DTOs.CurrencyDetailDTOs;
 using CurrencyWebAPI.Business.Models.VMs.CurrencyDetailVMs;
+using CurrencyWebAPI.Business.Models.VMs.CurrencyVMs;
 using CurrencyWebAPI.Domain.Entities;
 using CurrencyWebAPI.Domain.Repositories;
+using CurrencyWebAPI.Service.Services.CurrencyService;
+using HtmlAgilityPack;
 using Microsoft.EntityFrameworkCore;
 
 namespace CurrencyWebAPI.Service.Services.CurrencyDetailService
@@ -11,17 +13,36 @@ namespace CurrencyWebAPI.Service.Services.CurrencyDetailService
     {
         private readonly IMapper _mapper;
         private readonly ICurrencyDetailRepository _currencyDetailRepository;
+        private readonly ICurrencyService _currencyService;
 
-        public CurrencyDetailService(IMapper mapper, ICurrencyDetailRepository currencyDetailRepository)
+        public CurrencyDetailService(IMapper mapper, ICurrencyDetailRepository currencyDetailRepository, ICurrencyService currencyService)
         {
             _mapper = mapper;
             _currencyDetailRepository = currencyDetailRepository;
+            _currencyService = currencyService;
         }
 
-        public async Task Create(CreateCurrencyDetailDTO createCurrencyDetailDTO)
+        public async Task Create()
         {
-            CurrencyDetail currencyDetail = _mapper.Map<CurrencyDetail>(createCurrencyDetailDTO);
-            await _currencyDetailRepository.Add(currencyDetail);
+            List<CurrencyVM> currencies = await _currencyService.GetAll();
+
+            HtmlWeb web = new HtmlWeb();
+            var doc = web.Load("https://www.doviz.com/");
+            var docNode = doc.DocumentNode;
+
+            List<CurrencyDetail> currencyDetails = new List<CurrencyDetail>();
+
+            foreach (CurrencyVM currency in currencies ) 
+            {
+                CurrencyDetail currencyDetail = new CurrencyDetail();
+                currencyDetail.CurrencyId = currency.Id;
+                currencyDetail.Date = DateTime.Now;
+                currencyDetail.Value = (docNode.SelectSingleNode($"//span[@data-socket-key='{currency.AttributeName}' and @data-socket-attr='s']")).InnerText;
+                currencyDetails.Add(currencyDetail);
+            }
+
+
+            await _currencyDetailRepository.AddRange(currencyDetails);
 
         }
 
@@ -33,11 +54,24 @@ namespace CurrencyWebAPI.Service.Services.CurrencyDetailService
                     CurrencyName = x.Currency.Name,
                     Value = x.Value
                 },
-                where: null,
+                where: x => x.CurrencyId == currencyId,
                 orderby: x => x.OrderByDescending(y => y.Date),
                 include: x => x.Include(y=> y.Currency)
                 );
             return currencyDetailVM;
+        }
+
+        public async Task<List<CurrencyDetailVM>> GetLastValues()
+        {
+            List<CurrencyVM> currencies = await _currencyService.GetAll();
+
+            List<CurrencyDetailVM> currencyDetails = new List<CurrencyDetailVM>();
+
+            foreach (CurrencyVM currency in currencies)
+            {
+                currencyDetails.Add(await GetLastValue(currency.Id));
+            }
+            return currencyDetails;
         }
     }
 }

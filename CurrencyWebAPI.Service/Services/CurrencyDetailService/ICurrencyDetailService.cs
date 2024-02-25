@@ -5,7 +5,9 @@ namespace CurrencyWebAPI.Service.Services.CurrencyDetailService
 {
     public interface ICurrencyDetailService
     {
-        Task Create(CreateCurrencyDetailDTO createCurrencyDetailDTO);
+        Task Create();
         Task<CurrencyDetailVM> GetLastValue(int currencyId);
+        Task<List<CurrencyDetailVM>> GetLastValues();
+
     }
 }
