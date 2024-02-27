@@ -3,6 +3,7 @@ using Autofac;
 using CurrencyWebAPI.Business.IoC;
 using CurrencyWebAPI.Infrastructure.AppDbContext;
 using Microsoft.EntityFrameworkCore;
+using Quartz;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApplicationDbContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))); // Connection string will be taken from appsettings.json file
 
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+
+builder.Services.AddQuartzDependency();
 
 builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
 {
