@@ -4,6 +4,7 @@ using CurrencyWebAPI.Business.IoC;
 using CurrencyWebAPI.Infrastructure.AppDbContext;
 using Microsoft.EntityFrameworkCore;
 using Quartz;
+using CurrencyWebAPI.Business.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,11 +20,22 @@ builder.Services.AddDbContext<ApplicationDbContext>(x => x.UseSqlServer(builder.
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 
 builder.Services.AddQuartzDependency();
+builder.Services.AddSignalR();
 
 builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
 {
     builder.RegisterModule(new DependencyResolver());
 }); // Dependency injection için kullanýlan container burada implimente edildi.
+
+builder.Services.AddCors(options => options.AddPolicy("CorsPolicy",
+    builder =>
+    {
+        builder
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .SetIsOriginAllowed((host) => true)
+        .AllowCredentials();
+    }));
 
 var app = builder.Build();
 
@@ -37,6 +49,9 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseCors("CorsPolicy");
+app.MapHub<CurrencyHub>("/currencyHub");
 
 app.MapControllers();
 

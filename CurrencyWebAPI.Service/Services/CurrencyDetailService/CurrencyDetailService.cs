@@ -1,11 +1,14 @@
 ﻿using AutoMapper;
+using CurrencyWebAPI.Business.Hubs;
 using CurrencyWebAPI.Business.Models.VMs.CurrencyDetailVMs;
 using CurrencyWebAPI.Business.Models.VMs.CurrencyVMs;
 using CurrencyWebAPI.Domain.Entities;
 using CurrencyWebAPI.Domain.Repositories;
 using CurrencyWebAPI.Service.Services.CurrencyService;
 using HtmlAgilityPack;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace CurrencyWebAPI.Service.Services.CurrencyDetailService
 {
@@ -14,12 +17,14 @@ namespace CurrencyWebAPI.Service.Services.CurrencyDetailService
         private readonly IMapper _mapper;
         private readonly ICurrencyDetailRepository _currencyDetailRepository;
         private readonly ICurrencyService _currencyService;
+        private readonly IHubContext<CurrencyHub> _hubContext;
 
-        public CurrencyDetailService(IMapper mapper, ICurrencyDetailRepository currencyDetailRepository, ICurrencyService currencyService)
+        public CurrencyDetailService(IMapper mapper, ICurrencyDetailRepository currencyDetailRepository, ICurrencyService currencyService, IHubContext<CurrencyHub> hubContext)
         {
             _mapper = mapper;
             _currencyDetailRepository = currencyDetailRepository;
             _currencyService = currencyService;
+            _hubContext = hubContext;
         }
 
         public async Task Create()
@@ -43,6 +48,7 @@ namespace CurrencyWebAPI.Service.Services.CurrencyDetailService
 
 
             await _currencyDetailRepository.AddRange(currencyDetails);
+            await _hubContext.Clients.All.SendAsync("CurrentCurrencyValue", await GetLastValues());
 
         }
 
