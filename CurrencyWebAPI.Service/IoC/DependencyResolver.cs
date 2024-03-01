@@ -1,5 +1,7 @@
 ﻿using Autofac;
 using AutoMapper;
+using CurrencyWebAPI.Business.Services.CurrencyDetailDailyService;
+using CurrencyWebAPI.Business.Services.CurrencyDetailHourlyService;
 using CurrencyWebAPI.Domain.Repositories;
 using CurrencyWebAPI.Infrastructure.Repositories;
 using CurrencyWebAPI.Service.Services.CurrencyDetailService;
@@ -15,9 +17,15 @@ namespace CurrencyWebAPI.Business.IoC
             builder.RegisterType<Mapper>().As<IMapper>().InstancePerLifetimeScope();
             builder.RegisterType<CurrencyRepository>().As<ICurrencyRepository>().InstancePerLifetimeScope();
             builder.RegisterType<CurrencyDetailRepository>().As<ICurrencyDetailRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<CurrencyDetailHourlyRepository>().As<ICurrencyDetailHourlyRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<CurrencyDetailDailyRepository>().As<ICurrencyDetailDailyRepository>().InstancePerLifetimeScope();
+
 
             builder.RegisterType<CurrencyService>().As<ICurrencyService>().InstancePerLifetimeScope();
             builder.RegisterType<CurrencyDetailService>().As<ICurrencyDetailService>().InstancePerLifetimeScope();
+            builder.RegisterType<CurrencyDetailHourlyService>().As<ICurrencyDetailHourlyService>().InstancePerLifetimeScope();
+            builder.RegisterType<CurrencyDetailDailyService>().As<ICurrencyDetailDailyService>().InstancePerLifetimeScope();
+
 
 
             #region AutoMapper
