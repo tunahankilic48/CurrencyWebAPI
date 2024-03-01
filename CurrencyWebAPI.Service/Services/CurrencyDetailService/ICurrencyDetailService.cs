@@ -1,5 +1,4 @@
-﻿using CurrencyWebAPI.Business.Models.DTOs.CurrencyDetailDTOs;
-using CurrencyWebAPI.Business.Models.VMs.CurrencyDetailVMs;
+﻿using CurrencyWebAPI.Business.Models.VMs.CurrencyDetailVMs;
 
 namespace CurrencyWebAPI.Service.Services.CurrencyDetailService
 {
@@ -8,6 +7,8 @@ namespace CurrencyWebAPI.Service.Services.CurrencyDetailService
         Task Create();
         Task<CurrencyDetailVM> GetLastValue(int currencyId);
         Task<List<CurrencyDetailVM>> GetLastValues();
+        Task<List<CurrencyDetailVM>> GetHourlyValues(int currencyId, int hour);
+        Task DeleteCurrencyDetailInHour(int hour);
 
     }
 }

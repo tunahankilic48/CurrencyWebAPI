@@ -46,6 +46,8 @@ namespace CurrencyWebAPI.Domain.Repositories
         /// <param name="Id"></param>
         /// <returns></returns>
         Task<bool> Delete(TEntity entity);
+        Task<bool> DeleteRange(List<TEntity> entity);
+
 
         Task<int> Save();
     }

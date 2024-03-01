@@ -41,6 +41,12 @@ namespace CurrencyWebAPI.Infrastructure.Repositories
             return await Save() > 0;
         }
 
+        public async Task<bool> DeleteRange(List<TEntity> entity)
+        {
+            _table.RemoveRange(entity);
+            return await Save() > 0;
+        }
+
         public virtual async Task<TEntity> GetDefault(Expression<Func<TEntity, bool>> expression)
         {
             return await _table.FirstOrDefaultAsync(expression);

@@ -52,6 +52,34 @@ namespace CurrencyWebAPI.Service.Services.CurrencyDetailService
 
         }
 
+        public async Task DeleteCurrencyDetailInHour(int hour)
+        {
+            List<CurrencyDetail> currencyDetails = await _currencyDetailRepository.GetFilteredList(
+                select: x => new CurrencyDetail()
+                {
+                    Value = x.Value
+                },
+                where: x => x.Date.Hour == hour,
+                orderby: null,
+                include: null
+                );
+            await _currencyDetailRepository.DeleteRange(currencyDetails);
+        }
+
+        public async Task<List<CurrencyDetailVM>> GetHourlyValues(int currencyId, int hour)
+        {
+            List<CurrencyDetailVM> currencyDetailVM = await _currencyDetailRepository.GetFilteredList(
+                select: x => new CurrencyDetailVM()
+                {
+                    Value = x.Value
+                },
+                where: x => x.Date.Hour == hour && x.CurrencyId == currencyId,
+                orderby: x => x.OrderByDescending(y => y.Value),
+                include: null
+                );
+            return currencyDetailVM;
+        }
+
         public async Task<CurrencyDetailVM> GetLastValue(int currencyId)
         {
             CurrencyDetailVM currencyDetailVM = await _currencyDetailRepository.GetFilteredFirstOrDefault(

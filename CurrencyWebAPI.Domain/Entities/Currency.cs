@@ -7,6 +7,9 @@
         public string? AttributeName { get; set; }
 
         public List<CurrencyDetail>? CurrencyDetials { get; set; }
+        public List<CurrencyDetailHourly>? CurrencyDetialHourlys { get; set; }
+        public List<CurrencyDetailDaily>? CurrencyDetialDailys { get; set; }
+
 
     }
 }
