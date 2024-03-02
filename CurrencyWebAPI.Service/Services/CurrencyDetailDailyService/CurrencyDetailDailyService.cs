@@ -3,7 +3,6 @@ using CurrencyWebAPI.Business.Models.VMs.CurrencyVMs;
 using CurrencyWebAPI.Business.Services.CurrencyDetailHourlyService;
 using CurrencyWebAPI.Domain.Entities;
 using CurrencyWebAPI.Domain.Repositories;
-using CurrencyWebAPI.Service.Services.CurrencyDetailService;
 using CurrencyWebAPI.Service.Services.CurrencyService;
 
 namespace CurrencyWebAPI.Business.Services.CurrencyDetailDailyService
@@ -27,37 +26,49 @@ namespace CurrencyWebAPI.Business.Services.CurrencyDetailDailyService
             List<CurrencyVM> currencies = await _currencyService.GetAll();
             int day = DateTime.Now.Day - 1;
             List<CurrencyDetailDaily> currencyDetailsDaily = new List<CurrencyDetailDaily>();
-
-            foreach (CurrencyVM currency in currencies)
+            try
             {
-                double total = 0;
-                double maxValue = 0;
-                double minValue = 0;
-                List<CurrencyDetailHourly> currencyDetailsHourly = await _currencyDetailHourlyService.GetCurrencyDetailHourlyValues(currency.Id, day);
-                foreach (var currencyDetailHourly in currencyDetailsHourly)
+                foreach (CurrencyVM currency in currencies)
                 {
-                    double currencyAvarageValue = Double.Parse(currencyDetailHourly.AvarageValue);
-                    double currencyMaxValue = Double.Parse(currencyDetailHourly.MaxValue);
-                    double currencyMinValue = Double.Parse(currencyDetailHourly.MinValue);
+                    double total = 0;
+                    double maxValue = int.MinValue;
+                    double minValue = int.MaxValue;
+                    List<CurrencyDetailHourly> currencyDetailsHourly = await _currencyDetailHourlyService.GetCurrencyDetailHourlyValues(currency.Id, day);
+                    foreach (var currencyDetailHourly in currencyDetailsHourly)
+                    {
+                        double currencyAvarageValue = currency.Id == 5 ? Double.Parse(currencyDetailHourly.AvarageValue.Substring(1)) : Double.Parse(currencyDetailHourly.AvarageValue);
+                        double currencyMaxValue = currency.Id == 5 ? Double.Parse(currencyDetailHourly.MaxValue.Substring(1)) : Double.Parse(currencyDetailHourly.MaxValue);
+                        double currencyMinValue = currency.Id == 5 ? Double.Parse(currencyDetailHourly.MinValue.Substring(1)) : Double.Parse(currencyDetailHourly.MinValue);
 
 
-                    maxValue = currencyMaxValue < maxValue ? maxValue : currencyMaxValue;
-                    minValue = currencyMinValue > minValue ? minValue : currencyMinValue;
-                    total += currencyAvarageValue;
+                        maxValue = currencyMaxValue < maxValue ? maxValue : currencyMaxValue;
+                        minValue = currencyMinValue > minValue ? minValue : currencyMinValue;
+                        total += currencyAvarageValue;
+                    }
+                    double avarageValue = total / (double)currencyDetailsHourly.Count;
+
+                    avarageValue = Math.Round(avarageValue, 3);
+                    maxValue = Math.Round(maxValue, 3);
+                    minValue = Math.Round(minValue, 3);
+
+                    CurrencyDetailDaily currencyDetailDaily = new CurrencyDetailDaily()
+                    {
+                        CurrencyId = currency.Id,
+                        Date = DateTime.Now,
+                        AvarageValue = currency.Id == 5 ? avarageValue.ToString().Insert(0, "$") : avarageValue.ToString(),
+                        MaxValue = currency.Id == 5 ? maxValue.ToString().Insert(0, "$") : maxValue.ToString(),
+                        MinValue = currency.Id == 5 ? minValue.ToString().Insert(0, "$") : minValue.ToString()
+                    };
+                    currencyDetailsDaily.Add(currencyDetailDaily);
                 }
-                double avarageValue = total / (double)currencyDetailsHourly.Count;
-
-                CurrencyDetailDaily currencyDetailDaily = new CurrencyDetailDaily()
-                {
-                    CurrencyId = currency.Id,
-                    Date = DateTime.Now,
-                    AvarageValue = avarageValue.ToString(),
-                    MaxValue = maxValue.ToString(),
-                    MinValue = minValue.ToString()
-                };
-                currencyDetailsDaily.Add(currencyDetailDaily);
                 await _currencyDetailDailyRepository.AddRange(currencyDetailsDaily);
             }
+            catch (Exception e)
+            {
+                var error = e.Message;
+                throw;
+            }
+            
         }
     }
 }

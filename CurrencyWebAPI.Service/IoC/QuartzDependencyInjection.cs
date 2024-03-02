@@ -18,19 +18,21 @@ namespace CurrencyWebAPI.Business.IoC
                                     .ForJob(getCurrencyValueJobjobKey)
                                     //.WithCronSchedule("0 0/1 * 1/1 * ? *"));
                                     .WithSimpleSchedule(schedule => schedule.WithIntervalInSeconds(5).RepeatForever()));
-                var createCurrencyDailyValuesjobKey = JobKey.Create(nameof(CreateCurrencyDailyValuesJob));
-                options
-                    .AddJob<CreateCurrencyDailyValuesJob>(createCurrencyDailyValuesjobKey)
-                    .AddTrigger(trigger => trigger
-                                    .ForJob(createCurrencyDailyValuesjobKey)
-                                    .WithCronSchedule("0 0 0 1/1 * ? *"));
-                                    //.WithSimpleSchedule(schedule => schedule.WithIntervalInSeconds(5).RepeatForever()));
+
                 var createCurrencyHourlyValuesJobjobKey = JobKey.Create(nameof(CreateCurrencyHourlyValuesJob));
                 options
                     .AddJob<CreateCurrencyHourlyValuesJob>(createCurrencyHourlyValuesJobjobKey)
                     .AddTrigger(trigger => trigger
                                     .ForJob(createCurrencyHourlyValuesJobjobKey)
                                     .WithCronSchedule("0 0 0/1 1/1 * ? *"));
+                                    //.WithSimpleSchedule(schedule => schedule.WithIntervalInSeconds(5).RepeatForever()));
+
+                var createCurrencyDailyValuesjobKey = JobKey.Create(nameof(CreateCurrencyDailyValuesJob));
+                options
+                    .AddJob<CreateCurrencyDailyValuesJob>(createCurrencyDailyValuesjobKey)
+                    .AddTrigger(trigger => trigger
+                                    .ForJob(createCurrencyDailyValuesjobKey)
+                                    .WithCronSchedule("0 0 12 1/1 * ? *"));
                                     //.WithSimpleSchedule(schedule => schedule.WithIntervalInSeconds(5).RepeatForever()));
             });
 

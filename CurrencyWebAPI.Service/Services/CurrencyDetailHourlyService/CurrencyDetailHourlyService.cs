@@ -25,35 +25,46 @@ namespace CurrencyWebAPI.Business.Services.CurrencyDetailHourlyService
             List<CurrencyVM> currencies = await _currencyService.GetAll();
             int hour = DateTime.Now.Hour - 1;
             List<CurrencyDetailHourly> currencyDetailsHourly = new List<CurrencyDetailHourly>();
-
-            foreach (CurrencyVM currency in currencies)
+            try
             {
-                double total = 0;
-                double maxValue = 0;
-                double minValue = 0;
-                List<CurrencyDetailVM> currencyDetails =  await _currencyDetailService.GetHourlyValues(currency.Id, hour);
-                foreach (var currencyDetail in currencyDetails)
+                foreach (CurrencyVM currency in currencies)
                 {
-                    double currencyValue = Double.Parse(currencyDetail.Value);
-                    maxValue = currencyValue < maxValue ? maxValue : currencyValue;
-                    minValue = currencyValue > minValue ? minValue : currencyValue;
-                    total += currencyValue;
+                    double total = 0;
+                    double maxValue = int.MinValue;
+                    double minValue = int.MaxValue;
+                    List<CurrencyDetailVM> currencyDetails = await _currencyDetailService.GetHourlyValues(currency.Id, hour);
+                    foreach (var currencyDetail in currencyDetails)
+                    {
+                        double currencyValue = currency.Id == 5 ? Double.Parse(currencyDetail.Value.Substring(1)) : Double.Parse(currencyDetail.Value);
+                        maxValue = currencyValue < maxValue ? maxValue : currencyValue;
+                        minValue = currencyValue > minValue ? minValue : currencyValue;
+                        total += currencyValue;
+                    }
+                    double avarageValue = total / (double)currencyDetails.Count;
+                    avarageValue = Math.Round(avarageValue, 3);
+                    maxValue = Math.Round(maxValue, 3);
+                    minValue = Math.Round(minValue, 3);
+
+                    CurrencyDetailHourly currencyDetailHourly = new CurrencyDetailHourly()
+                    {
+                        CurrencyId = currency.Id,
+                        Date = DateTime.Now,
+                        AvarageValue = currency.Id == 5 ? avarageValue.ToString().Insert(0, "$") : avarageValue.ToString(),
+                        MaxValue = currency.Id == 5 ? maxValue.ToString().Insert(0, "$") : maxValue.ToString(),
+                        MinValue = currency.Id == 5 ? minValue.ToString().Insert(0, "$") : minValue.ToString()
+                    };
+                    currencyDetailsHourly.Add(currencyDetailHourly);
                 }
-                double avarageValue = total / (double)currencyDetails.Count;
 
-                CurrencyDetailHourly currencyDetailHourly = new CurrencyDetailHourly()
-                {
-                    CurrencyId = currency.Id,
-                    Date = DateTime.Now,
-                    AvarageValue = avarageValue.ToString(),
-                    MaxValue = maxValue.ToString(),
-                    MinValue = minValue.ToString()
-                };
-                currencyDetailsHourly.Add(currencyDetailHourly);
+                await _currencyDetailHourlyRepository.AddRange(currencyDetailsHourly);
+                await _currencyDetailService.DeleteCurrencyDetailInHour(hour);
+
             }
-
-            await _currencyDetailHourlyRepository.AddRange(currencyDetailsHourly);
-            await _currencyDetailService.DeleteCurrencyDetailInHour(hour);
+            catch (Exception e)
+            {
+                var error = e.Message;
+                throw;
+            }
 
         }
 
