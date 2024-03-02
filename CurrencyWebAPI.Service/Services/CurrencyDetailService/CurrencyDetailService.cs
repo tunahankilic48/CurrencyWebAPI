@@ -57,12 +57,15 @@ namespace CurrencyWebAPI.Service.Services.CurrencyDetailService
             List<CurrencyDetail> currencyDetails = await _currencyDetailRepository.GetFilteredList(
                 select: x => new CurrencyDetail()
                 {
-                    Value = x.Value
+                    CurrencyId = x.CurrencyId,
+                    Value = x.Value,
+                    Date = x.Date
                 },
                 where: x => x.Date.Hour == hour,
                 orderby: null,
                 include: null
                 );
+
             await _currencyDetailRepository.DeleteRange(currencyDetails);
         }
 
