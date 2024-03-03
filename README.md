@@ -1,6 +1,7 @@
 # Currency Web API
 
 This API application was written to get currencies  from the website [www.kur.doviz.com](https://kur.doviz.com/) and save them to the database.
+
 ## Technologies and Packages
 
 - .Net 8.0
