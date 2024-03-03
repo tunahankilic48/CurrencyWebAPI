@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CurrencyWebAPI.Domain", "Cu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CurrencyWebAPI.Infrastructure", "CurrencyWebAPI.Infrastructure\CurrencyWebAPI.Infrastructure.csproj", "{99251D72-ED2F-4DD6-9A42-CD5598ACCB93}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CurrencyWebAPI.Business", "CurrencyWebAPI.Service\CurrencyWebAPI.Business.csproj", "{756C400A-EBF8-4C35-A6CB-68ACE4B60438}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CurrencyWebAPI.Business", "CurrencyWebAPI.Service\CurrencyWebAPI.Business.csproj", "{756C400A-EBF8-4C35-A6CB-68ACE4B60438}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Documantation", "Documantation\Documantation.csproj", "{ACE6412B-96A0-47EC-8C60-32F6C4D71D08}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{756C400A-EBF8-4C35-A6CB-68ACE4B60438}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{756C400A-EBF8-4C35-A6CB-68ACE4B60438}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{756C400A-EBF8-4C35-A6CB-68ACE4B60438}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACE6412B-96A0-47EC-8C60-32F6C4D71D08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACE6412B-96A0-47EC-8C60-32F6C4D71D08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACE6412B-96A0-47EC-8C60-32F6C4D71D08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACE6412B-96A0-47EC-8C60-32F6C4D71D08}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

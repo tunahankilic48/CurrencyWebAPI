@@ -32,7 +32,7 @@ namespace CurrencyWebAPI.Service.Services.CurrencyDetailService
             List<CurrencyVM> currencies = await _currencyService.GetAll();
 
             HtmlWeb web = new HtmlWeb();
-            var doc = web.Load("https://www.doviz.com/");
+            var doc = web.Load("https://kur.doviz.com/");
             var docNode = doc.DocumentNode;
 
             List<CurrencyDetail> currencyDetails = new List<CurrencyDetail>();
@@ -42,7 +42,7 @@ namespace CurrencyWebAPI.Service.Services.CurrencyDetailService
                 CurrencyDetail currencyDetail = new CurrencyDetail();
                 currencyDetail.CurrencyId = currency.Id;
                 currencyDetail.Date = DateTime.Now;
-                currencyDetail.Value = (docNode.SelectSingleNode($"//span[@data-socket-key='{currency.AttributeName}' and @data-socket-attr='s']")).InnerText;
+                currencyDetail.Value = (docNode.SelectSingleNode($"//td[@data-socket-key='{currency.AttributeName}'  and @data-socket-attr='ask']")).InnerText;
                 currencyDetails.Add(currencyDetail);
             }
 
