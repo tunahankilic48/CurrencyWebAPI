@@ -1,8 +1,8 @@
 # Currency Web API
 
-Bu API uygulaması [www.kur.doviz.com](https://kur.doviz.com/) websitesinden döviz kurlarının alınıp veritabanına kaydedilmesi için yazılmıştır.
+Bu API uygulaması [www.kur.doviz.com](https://kur.doviz.com/) web sitesinden döviz kurlarının alınıp veritabanına kaydedilmesi için yazılmıştır.
 
-## Technologies and Packages
+## Teknolojiler ve paketler
 
 - .Net 8.0
 - EntitiyFramework
@@ -12,57 +12,30 @@ Bu API uygulaması [www.kur.doviz.com](https://kur.doviz.com/) websitesinden dö
 - Autofac
 - Automapper
 
-## Getting Started
+## Başlarken
 
 Uygulamayı klonladıktan sonra çalıştırmak için CurrencyWebAPI katmanında bulunan appsettings.json dosyası içindeki sql connection cümleciğini değiştirmeniz gerekmektedir.
 
 ![appsettings](/Documantation/appsettingsjson.png "appsettings")
 ![Connection String](/Documantation/appsettingsjsonconnectionstring.png "Connection String")
 
-### Requirements
+Sonrasında Package Manager Console’da update-database komutunu çalıştırmalısınız.
 
-- Java 17
-- Maven
-- PostgreSQL
+## Endpoints
 
-### Installation
+Döviz (Currency) ve Döviz değeri (CurrencyDetail) için ayrı endpointler oluşturulmuştur. Sisteminize kaydettiğiniz dövizleri görüntüleyebilir (GetAllCurrencies, GetCurrencyById), yeni döviz ekleyebilir (AddCurrency), döviz bilgilerini güncelleyebilir (UpdateCurrency) ve döviz bilgilerini silebilirsiniz (DeleteCurrency). Yeni döviz eklemek için, enpoint'de bulunan name alanına kendi belirlediğiniz ismi koymalı, attribute name alanını doldurabilmek için ise [www.kur.doviz.com](https://kur.doviz.com/) sitesine gitmeli ve dövizin kısa kodunu büyük harfler ile yazmalısınız. 
 
-1. Clone the project:
+![Kanada Doları](/Documantation/kanadadolari.png "Kanada Doları")
+![Kanada Doları Ekleme](/Documantation/addkanadadolari.png "Kanada Doları Ekleme")
 
-   ```bash
-   git clone https://github.com/erenuygur/flight-search-api.git
-   ```
-2. Navigate to the project directory:
+Döviz değeri içinse veritabanından sadece en güncel veriyi çekebilirsiniz. Web sitesinden veri çekilebilmesi için HtmlAgilityPack kullanılmıştır. Geriye kalan işlemler Quartz.net ile belirlenen zamanlarda tetiklenmekte ve veritabanına kaydedilmektedir (JOB).
 
-   ```bash
-   cd flight-search-api
-   ```
-3. Build the project:
-   ```bash
-   mvn clean install
-   ```
+## JOBS
 
-4. Run the application:
-   ```bash
-   mvn java -jar target/flight-search-api-1.0.0.jar
-   ```
-### Security Considerations
-For security reasons, certain configuration details such as API keys, passwords, and sensitive information are not included in this public repository. Follow the steps below to configure these details:
-   ```
-      username: admin
-      password: admin
-   ```
-Database Configuration: Configure the database connection details in the application.properties file.
-   ```
-      spring.datasource.url=jdbc:postgresql://localhost:5432/flight_search
-      spring.datasource.username=postgres
-      spring.datasource.password=1234
-   ```
+Sistemin otomatikleştirilmesi için [Jobs](/CurrencyWebAPI.Service/Jobs) dosyası içirisine, Quartz.net kullanılarak 3 adet job yazıldı. GetCurrencyValueJob Job'ı istenen döviz kurlarının güncel değerlerini almak için yazılmıştır. CreateCurrencyHourlyValuesJob Job'ı veritababına kaydedilen verilerin her saat için maksimum, minimum ve ortalama değerini almak için yazılmıştır.  Veritabanının ekonomik kullanılabilmesi için saatlik değerler hesaplandıktan sonra kullanılan verileri silmektedir. CreateCurrencyDailyValuesJob Job'ı ise saatlik job ile benzer çalışmakta fakat bu işlemi her gün sonunda yapmaktadır ve bu işlemde herhangi bir veri silinmemektedir. Bu jobların tetiklenmesi için gereken kodları görmek için [buraya](/IoC/QuartzDependencyInjection.cs) tıklayabilirsiniz. GetCurrencyValueJob 5 saniyede bir, CreateCurrencyHourlyValuesJob her saat başı ve CreateCurrencyDailyValuesJob her gün sonunda tetiklenmektedir.
 
-Once the application is running, you can access the API documentation at http://localhost:8080/swagger-ui.html.
+## SignalR
 
-![Swagger](/content/SwaggerDoc.PNG "End Points").
+SignalR veritabanında veri değiştiği zaman, endpoint ile bunu haber veren bir yapıya sahiptir. Uygulama bir önyüz ile birlikte kullanıldığı zaman güncel verileri almak için kullanılabilir. Uygulamasını görmek için [CurrencyMVC](https://github.com/tunahankilic48/CurrencyMVC) projesini inceleyebilirsiniz.
 
-
-
-# Flight-Search-API
+# Currency Web API
