@@ -1,8 +1,7 @@
 # Currency Web API
 
-Bu API uygulaması [www.kur.doviz.com](https://kur.doviz.com/) web sitesinden döviz kurlarının alınıp veritabanına kaydedilmesi için yazılmıştır.
-
-## Teknolojiler ve paketler
+This API application was written to get currencies  from the website [www.kur.doviz.com](https://kur.doviz.com/) and save them to the database.
+## Technologies and Packages
 
 - .Net 8.0
 - EntitiyFramework
@@ -12,34 +11,29 @@ Bu API uygulaması [www.kur.doviz.com](https://kur.doviz.com/) web sitesinden d�
 - Autofac
 - Automapper
 
-## Başlarken
+## Getting Started
 
-Uygulamayı klonladıktan sonra çalıştırmak için CurrencyWebAPI katmanında bulunan appsettings.json dosyası içindeki sql connection cümleciğini değiştirmeniz gerekmektedir.
-
+To run the application after cloning it, you need to change the sql connection string in the appsettings.json file in the CurrencyWebAPI layer.
 ![appsettings](/Documantation/appsettingsjson.png "appsettings")
 ![Connection String](/Documantation/appsettingsjsonconnectionstring.png "Connection String")
 
-Sonrasında Package Manager Console’da update-database komutunu çalıştırmalısınız.
+Afterwards, you must run the update-database command in the Package Manager Console.
 
 ## Endpoints
 
-Döviz (Currency) ve Döviz değeri (CurrencyDetail) için ayrı endpointler oluşturulmuştur. Sisteminize kaydettiğiniz dövizleri görüntüleyebilir (GetAllCurrencies, GetCurrencyById), yeni döviz ekleyebilir (AddCurrency), döviz bilgilerini güncelleyebilir (UpdateCurrency) ve döviz bilgilerini silebilirsiniz (DeleteCurrency). 
+Different endpoints have been created for Currency (Currency)  and Currency Detail (CurrencyDetail). You can get the currencies you have saved in your database (GetAllCurrencies, GetCurrencyById), add new currency (AddCurrency), update currency values (UpdateCurrency) and delete currency (DeleteCurrency).
+![Endpoints](/Documantation/endpoints.png "Endpoints")
 
-![Endpointler](/Documantation/endpoints.png "Endpointler")
-
-Yeni döviz eklemek için, enpoint'de bulunan name alanına kendi belirlediğiniz ismi koymalı, attribute name alanını doldurabilmek için ise [www.kur.doviz.com](https://kur.doviz.com/) sitesine gitmeli ve dövizin kısa kodunu büyük harfler ile yazmalısınız. 
-
+To add a new currency, you must enter your own name in the name field in Enpoint. To fill in the Attribute name field, you must go to [www.kur.doviz.com](https://kur.doviz.com/) and write the short code of the currency in capital letters.
 ![Kanada Doları](/Documantation/kanadadolari.png "Kanada Doları")
-![Kanada Doları Ekleme](/Documantation/addkanadadolari.png "Kanada Doları Ekleme")
+![Adding Canada Dolar](/Documantation/addkanadadolari.png "Adding Canada Dolar")
 
-Döviz değeri içinse veritabanından sadece en güncel veriyi çekebilirsiniz. Web sitesinden veri çekilebilmesi için HtmlAgilityPack kullanılmıştır. Geriye kalan işlemler Quartz.net ile belirlenen zamanlarda tetiklenmekte ve veritabanına kaydedilmektedir (JOB).
-
+For the currency value, you can only get the most current data from the database. HtmlAgilityPack was used to get data from the website (WebScraping). The remaining transactions are triggered at specified times with Quartz.net and saved in the database (JOB).
 ## JOBS
 
-Sistemin otomatikleştirilmesi için [Jobs](/CurrencyWebAPI.Service/Jobs) dosyası içirisine, Quartz.net kullanılarak 3 adet job yazıldı. GetCurrencyValueJob Job'ı istenen döviz kurlarının güncel değerlerini almak için yazılmıştır. CreateCurrencyHourlyValuesJob Job'ı veritababına kaydedilen verilerin her saat için maksimum, minimum ve ortalama değerini almak için yazılmıştır.  Veritabanının ekonomik kullanılabilmesi için saatlik değerler hesaplandıktan sonra kullanılan verileri silmektedir. CreateCurrencyDailyValuesJob Job'ı ise saatlik job ile benzer çalışmakta fakat bu işlemi her gün sonunda yapmaktadır ve bu işlemde herhangi bir veri silinmemektedir. Bu jobların tetiklenmesi için gereken kodları görmek için [buraya](/IoC/QuartzDependencyInjection.cs) tıklayabilirsiniz. GetCurrencyValueJob 5 saniyede bir, CreateCurrencyHourlyValuesJob her saat başı ve CreateCurrencyDailyValuesJob her gün sonunda tetiklenmektedir.
+To automate the system, 3 jobs were written in the [Jobs](/CurrencyWebAPI.Service/Jobs) file using Quartz.net. The GetCurrencyValueJob was written to get the current values of the desired currency. CreateCurrencyHourlyValuesJob Job was written to get the maximum, minimum and average value of the data saved in the database for each hour. In order to use the database economically, the used data is deleted after the hourly values are calculated. The CreateCurrencyDailyValuesJob works similar to the hourly job, but it performs this operation at the end of each day and no data is deleted in this process. You can click [here](/IoC/QuartzDependencyInjection.cs) to see the codes required to trigger these jobs. GetCurrencyValueJob is triggered every 5 seconds, CreateCurrencyHourlyValuesJob is triggered every hour, and CreateCurrencyDailyValuesJob is triggered at the end of each day.
 
 ## SignalR
 
-SignalR veritabanında veri değiştiği zaman, endpoint ile bunu haber veren bir yapıya sahiptir. Uygulama bir önyüz ile birlikte kullanıldığı zaman güncel verileri almak için kullanılabilir. Uygulamasını görmek için [CurrencyMVC](https://github.com/tunahankilic48/CurrencyMVC) projesini inceleyebilirsiniz.
-
+SignalR has a structure that notifies you with an endpoint when data changes in the database. When used with a frontend, the application can be used to get up-to-date data. You can review the [CurrencyMVC](https://github.com/tunahankilic48/CurrencyMVC) project to see its implementation.
 # Currency Web API
