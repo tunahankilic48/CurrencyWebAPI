@@ -1,4 +1,4 @@
-# Flight Search API
+# Currency Web API
 
 Bu API uygulaması [www.kur.doviz.com](https://kur.doviz.com/) websitesinden döviz kurlarının alınıp veritabanına kaydedilmesi için yazılmıştır.
 
@@ -15,6 +15,7 @@ Bu API uygulaması [www.kur.doviz.com](https://kur.doviz.com/) websitesinden dö
 ## Getting Started
 
 Uygulamayı klonladıktan sonra çalıştırmak için CurrencyWebAPI katmanında bulunan appsettings.json dosyası içindeki sql connection cümleciğini değiştirmeniz gerekmektedir.
+/documentation/images/appsettingsjson.png
 
 ### Requirements
 
