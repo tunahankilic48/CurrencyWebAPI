@@ -1,4 +1,5 @@
-# Currency Web API
+# Currency Web API 
+[Tükçe için tıklayınız](/Documantation/READMETURKCE.md)
 
 This API application was written to get currencies  from the website [www.kur.doviz.com](https://kur.doviz.com/) and save them to the database.
 
