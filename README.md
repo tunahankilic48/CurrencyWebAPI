@@ -23,7 +23,11 @@ Sonrasında Package Manager Console’da update-database komutunu çalıştırma
 
 ## Endpoints
 
-Döviz (Currency) ve Döviz değeri (CurrencyDetail) için ayrı endpointler oluşturulmuştur. Sisteminize kaydettiğiniz dövizleri görüntüleyebilir (GetAllCurrencies, GetCurrencyById), yeni döviz ekleyebilir (AddCurrency), döviz bilgilerini güncelleyebilir (UpdateCurrency) ve döviz bilgilerini silebilirsiniz (DeleteCurrency). Yeni döviz eklemek için, enpoint'de bulunan name alanına kendi belirlediğiniz ismi koymalı, attribute name alanını doldurabilmek için ise [www.kur.doviz.com](https://kur.doviz.com/) sitesine gitmeli ve dövizin kısa kodunu büyük harfler ile yazmalısınız. 
+Döviz (Currency) ve Döviz değeri (CurrencyDetail) için ayrı endpointler oluşturulmuştur. Sisteminize kaydettiğiniz dövizleri görüntüleyebilir (GetAllCurrencies, GetCurrencyById), yeni döviz ekleyebilir (AddCurrency), döviz bilgilerini güncelleyebilir (UpdateCurrency) ve döviz bilgilerini silebilirsiniz (DeleteCurrency). 
+
+![Endpointler](/Documantation/endpoints.png "Endpointler")
+
+Yeni döviz eklemek için, enpoint'de bulunan name alanına kendi belirlediğiniz ismi koymalı, attribute name alanını doldurabilmek için ise [www.kur.doviz.com](https://kur.doviz.com/) sitesine gitmeli ve dövizin kısa kodunu büyük harfler ile yazmalısınız. 
 
 ![Kanada Doları](/Documantation/kanadadolari.png "Kanada Doları")
 ![Kanada Doları Ekleme](/Documantation/addkanadadolari.png "Kanada Doları Ekleme")
