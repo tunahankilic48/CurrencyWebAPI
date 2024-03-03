@@ -15,7 +15,7 @@ Bu API uygulaması [www.kur.doviz.com](https://kur.doviz.com/) websitesinden dö
 ## Getting Started
 
 Uygulamayı klonladıktan sonra çalıştırmak için CurrencyWebAPI katmanında bulunan appsettings.json dosyası içindeki sql connection cümleciğini değiştirmeniz gerekmektedir.
-![appsettings.json](/documentation/images/appsettingsjson.png)
+![appsettings.json](/Documentation/Images/appsettingsjson.png)
 
 ### Requirements
 
