@@ -23,7 +23,7 @@ Sonrasýnda Package Manager Console’da update-database komutunu çalýþtýrmalýsýnýz
 
 ## Endpoints
 
-Döviz (Currency) ve Döviz deðeri (CurrencyDetail) için ayrý endpointler oluþturulmuþtur. Sisteminize kaydettiðiniz dövizleri görüntüleyebilir (GetAllCurrencies, GetCurrencyById), yeni döviz ekleyebilir (AddCurrency), döviz bilgilerini güncelleyebilir (UpdateCurrency) ve döviz bilgilerini silebilirsiniz (DeleteCurrency). 
+Döviz (Currency) ve Döviz deðeri (CurrencyDetail) için ayrý endpointler oluþturulmuþtur. Sisteminize kaydettiðiniz dövizleri görüntüleyebilir (GetAllCurrencies, GetCurrencyById), yeni döviz ekleyebilir (AddCurrency), döviz bilgilerini güncelleyebilir (UpdateCurrency) ve döviz bilgilerini silebilirsiniz (DeleteCurrency). Saatlik (GetHourlyValue) ve günlük (GetDailyValue) verileride istenen parametreleri göndererek alabiliriz.
 
 ![Endpointler](/Documantation/endpoints.png "Endpointler")
 Yeni döviz eklemek için, enpoint'de bulunan name alanýna kendi belirlediðiniz ismi koymalý, attribute name alanýný doldurabilmek için ise [www.kur.doviz.com](https://kur.doviz.com/) sitesine gitmeli ve dövizin kýsa kodunu büyük harfler ile yazmalýsýnýz. 
@@ -39,6 +39,6 @@ Sistemin otomatikleþtirilmesi için [Jobs](/CurrencyWebAPI.Service/Jobs) dosyasý 
 
 ## SignalR
 
-SignalR veritabanýnda veri deðiþtiði zaman, endpoint ile bunu haber veren bir yapýya sahiptir. Uygulama bir önyüz ile birlikte kullanýldýðý zaman güncel verileri almak için kullanýlabilir. Uygulamasýný görmek için [CurrencyMVC](https://github.com/tunahankilic48/CurrencyMVC) projesini inceleyebilirsiniz.
+SignalR veritabanýnda veri deðiþtiði zaman, endpoint ile bunu haber veren bir yapýya sahiptir. Uygulama bir önyüz ile birlikte kullanýldýðý zaman güncel verileri almak için kullanýlabilir. Bu uygulama içerisinde https://localhost:44383/currencyhub endpoint'i ile istenen döviz kurlarýnýn anlýk deðiþimlerini takip edebiliriz. Uygulamasýný görmek için [CurrencyMVC](https://github.com/tunahankilic48/CurrencyMVC) projesini inceleyebilirsiniz.
 
 # Currency Web API

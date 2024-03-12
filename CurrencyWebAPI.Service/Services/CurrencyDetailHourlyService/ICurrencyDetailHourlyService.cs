@@ -1,4 +1,5 @@
-﻿using CurrencyWebAPI.Domain.Entities;
+﻿using CurrencyWebAPI.Business.Models.VMs.CurrencyDetailVMs;
+using CurrencyWebAPI.Domain.Entities;
 
 namespace CurrencyWebAPI.Business.Services.CurrencyDetailHourlyService
 {
@@ -6,5 +7,6 @@ namespace CurrencyWebAPI.Business.Services.CurrencyDetailHourlyService
     {
         Task CreateHourlyValues();
         Task<List<CurrencyDetailHourly>> GetCurrencyDetailHourlyValues(int currencyId, int day);
+        Task<List<CurrencyDetailHourlyVM>> GetCurrencyDetailHourlyValuesInExactTime(int year, int month, int day, int hour);
     }
 }
