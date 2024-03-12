@@ -70,5 +70,23 @@ namespace CurrencyWebAPI.Business.Services.CurrencyDetailDailyService
             }
             
         }
+
+        public async Task<List<CurrencyDetailDailyVM>> GetCurrencyDetailDailylyValues(int year, int month, int day)
+        {
+            List<CurrencyDetailDailyVM> currencyDetailsHourly = await _currencyDetailDailyRepository.GetFilteredList(
+                select: x => new CurrencyDetailDailyVM()
+                {
+                    CurrencyId = x.CurrencyId,
+                    Date = x.Date,
+                    AvarageValue = x.AvarageValue,
+                    MaxValue = x.MaxValue,
+                    MinValue = x.MinValue
+                },
+                where: x => x.Date.Year == year && x.Date.Month == month && x.Date.Day == day,
+                orderby: null,
+                include: null
+                );
+            return currencyDetailsHourly;
+        }
     }
 }
