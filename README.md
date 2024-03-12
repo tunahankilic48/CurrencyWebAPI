@@ -23,7 +23,7 @@ Afterwards, you must run the update-database command in the Package Manager Cons
 
 ## Endpoints
 
-Different endpoints have been created for Currency (Currency)  and Currency Detail (CurrencyDetail). You can get the currencies you have saved in your database (GetAllCurrencies, GetCurrencyById), add new currency (AddCurrency), update currency values (UpdateCurrency) and delete currency (DeleteCurrency).
+Different endpoints have been created for Currency (Currency)  and Currency Detail (CurrencyDetail). You can get the currencies you have saved in your database (GetAllCurrencies, GetCurrencyById), add new currency (AddCurrency), update currency values (UpdateCurrency) and delete currency (DeleteCurrency). We can also get hourly (GetHourlyValue) and daily (GetDailyValue) data by sending the desired parameters.
 ![Endpoints](/Documantation/endpoints.png "Endpoints")
 
 To add a new currency, you must enter your own name in the name field in Enpoint. To fill in the Attribute name field, you must go to [www.kur.doviz.com](https://kur.doviz.com/) and write the short code of the currency in capital letters.
@@ -37,5 +37,5 @@ To automate the system, 3 jobs were written in the [Jobs](/CurrencyWebAPI.Servic
 
 ## SignalR
 
-SignalR has a structure that notifies you with an endpoint when data changes in the database. When used with a frontend, the application can be used to get up-to-date data. You can review the [CurrencyMVC](https://github.com/tunahankilic48/CurrencyMVC) project to see its implementation.
+SignalR has a structure that notifies you with an endpoint when data changes in the database. When used with a frontend, the application can be used to get up-to-date data. In this application, we can follow the instant changes of the currencies with the https://localhost:44383/currencyhub endpoint. You can review the [CurrencyMVC](https://github.com/tunahankilic48/CurrencyMVC) project to see its implementation.
 # Currency Web API
