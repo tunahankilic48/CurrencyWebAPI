@@ -16,6 +16,7 @@ This API application was written to get currencies  from the website [www.kur.do
 ## Getting Started
 
 To run the application after cloning it, you need to change the sql connection string in the appsettings.json file in the CurrencyWebAPI layer.
+
 ![appsettings](/Documantation/appsettingsjson.png "appsettings")
 ![Connection String](/Documantation/appsettingsjsonconnectionstring.png "Connection String")
 
